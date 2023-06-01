@@ -39,6 +39,7 @@ async def scraper_main(product_list):
 
     async with aiohttp.ClientSession() as session:
         for product in product_list:
+            print(f"Scraping {product}...")
             yochananof_price = await scrape_yochananof(session, product)
             shufersal_price = await scrape_shufersal(session, product)
 

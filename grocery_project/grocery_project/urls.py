@@ -17,8 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from grocery_app.views import GroceryItemViewSet
-from grocery_app.views import compare_prices
+from grocery_app.views import GroceryItemViewSet, compare_prices, UserCreate, UserLoginView, UserLogoutView
 
 
 router = DefaultRouter()
@@ -28,4 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('compare_prices/', compare_prices, name='compare_prices'),
+    path('api/register/', UserCreate.as_view(), name="user_register"),
+    path('api/login/', UserLoginView.as_view(), name='login'),
+    path('api/logout/', UserLogoutView.as_view(), name='logout'),
 ]

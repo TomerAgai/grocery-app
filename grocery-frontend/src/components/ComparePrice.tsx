@@ -32,8 +32,8 @@ const ComparePricesButton: React.FC = () => {
             {
                 compareResult &&
                 <div>
-                    <p>Yochananof total price: {compareResult.yochananof_total_price}</p>
-                    <p>Shufersal total price: {compareResult.shufersal_total_price}</p>
+                    <p>Yochananof total price: {compareResult.yochananof_total_price.toFixed(2) + ' ₪'}</p>
+                    <p>Shufersal total price: {compareResult.shufersal_total_price.toFixed(2) + ' ₪'}</p>
                     <p>Not found in Yochananof: {compareResult != null ? compareResult.not_found_list_yochananof.join(', ') : []}</p>
                     <p>Not found in Shufersal: {compareResult != null ? compareResult.not_found_list_shufersal.join(', ') : []}</p>
                 </div>
