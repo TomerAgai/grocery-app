@@ -1,6 +1,5 @@
 import aiohttp
 from pyquery import PyQuery as pq
-import asyncio
 
 
 async def fetch(session, url):
@@ -15,7 +14,6 @@ async def scrape_yochananof(session, product_name):
         html = pq(html_content)
         price_element = html('.price:first')
         return float(price_element.text().split()[0].replace('‏', ''))
-
     except Exception as e:
         print(f"An error occurred on Yochananof: {e}")
         return None
@@ -28,13 +26,12 @@ async def scrape_shufersal(session, product_name):
         html = pq(html_content)
         price_element = html('[data-product-price]:first')
         return float(price_element.attr('data-product-price'))
-
     except Exception as e:
         print(f"An error occurred on Shufersal: {e}")
         return None
 
 
-async def main(product_list):
+async def scraper_main(product_list):
     not_found_list_yochananof = []
     not_found_list_shufersal = []
     yochananof_total_price = 0.0
@@ -55,11 +52,4 @@ async def main(product_list):
             else:
                 shufersal_total_price += shufersal_price
 
-    print(f'Yochananof total price: {yochananof_total_price}')
-    print(f'Shufersal total price: {shufersal_total_price}')
-    print(f'Not found in Yochananof: {not_found_list_yochananof}')
-    print(f'Not found in Shufersal: {not_found_list_shufersal}')
-
-
-product_list = ['חלב', 'ביצים']  # Your list of products in Hebrew
-asyncio.run(main(product_list))
+    return yochananof_total_price, shufersal_total_price, not_found_list_yochananof, not_found_list_shufersal

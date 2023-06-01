@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from grocery_app.views import GroceryItemViewSet
+from grocery_app.views import compare_prices
+
 
 router = DefaultRouter()
 router.register(r'grocery_items', GroceryItemViewSet)
@@ -25,4 +27,5 @@ router.register(r'grocery_items', GroceryItemViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
+    path('compare_prices/', compare_prices, name='compare_prices'),
 ]
