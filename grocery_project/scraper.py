@@ -1,42 +1,54 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
+import aiohttp
+from pyquery import PyQuery as pq
+import asyncio
 
-# Setup Chrome options to run headless
-chrome_options = Options()
-chrome_options.add_argument("--headless")
 
-# create a new browser session
-driver = webdriver.Chrome(options=chrome_options)
+async def fetch(session, url):
+    async with session.get(url) as response:
+        return await response.text()
 
-# navigate to a webpage
-driver.get('https://yochananof.co.il/')
+# async def fetch(session, url, filename):
+#     async with session.get(url) as response:
+#         html_content = await response.text()
+#         with open(filename, 'w', encoding='utf-8') as f:
+#             f.write(html_content)
+#         return html_content
 
-# find the search input field
-search_field = driver.find_element(By.ID, 'autocomplete-0-input')
-print(search_field.text)
 
-# clear the input field
-search_field.clear()
+async def scrape_yochananof(session, product_name):
+    try:
+        url = f'https://yochananof.co.il/s59/catalogsearch/result/?q={product_name}'
+        # html_content = await fetch(session, url, 'yochananof_search.html')
+        html_content = await fetch(session, url)
+        html = pq(html_content)
+        price_element = html('.price:first')
+        return float(price_element.text().split()[0].replace('‏', ''))
 
-# enter the search keyword and submit
-search_field.send_keys('מלפפון')
-search_field.send_keys(Keys.RETURN)
+    except Exception as e:
+        print(f"An error occurred on Yochananof: {e}")
+        return None
 
-# allow some time for results to load
-time.sleep(5)
 
-# find the price of the first product in the search result
-price_element = WebDriverWait(driver, 10).until(
-    EC.presence_of_element_located((By.CSS_SELECTOR, '.price:first-of-type'))
-)
+async def scrape_shufersal(session, product_name):
+    try:
+        url = f'https://www.shufersal.co.il/online/he/search?text={product_name}'
+        html_content = await fetch(session, url)
+        html = pq(html_content)
+        price_element = html('[data-product-price]:first')
+        return float(price_element.attr('data-product-price'))
 
-# print the price
-print(price_element.text)
+    except Exception as e:
+        print(f"An error occurred on Shufersal: {e}")
+        return None
 
-# end the browser session
-driver.quit()
+
+async def main():
+    async with aiohttp.ClientSession() as session:
+        product_list = ['חלב', 'ביצים']  # Your list of products in Hebrew
+        for product in product_list:
+            yochananof_price = await scrape_yochananof(session, product)
+            shufersal_price = await scrape_shufersal(session, product)
+            print(
+                f"For {product}, Yochananof price: {yochananof_price},  Shufersal price: {shufersal_price}")
+
+asyncio.run(main())
