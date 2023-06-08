@@ -4,16 +4,34 @@ from django.shortcuts import render
 from rest_framework import viewsets, status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import GroceryItem
-from .serializers import GroceryItemSerializer, UserSerializer
+from .models import GroceryItem, GroceryList
+from .serializers import GroceryItemSerializer, UserSerializer, GroceryListSerializer
 from scraper import scraper_main
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAuthenticated
+
+
+class GroceryListViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = GroceryList.objects.all()
+    serializer_class = GroceryListSerializer
+
+    @action(detail=True, methods=['post'])
+    def share(self, request, pk=None):
+        grocery_list = self.get_object()
+        user_id = request.data.get('user_id')
+        try:
+            user = User.objects.get(pk=user_id)
+            grocery_list.users.add(user)
+            grocery_list.save()
+            return Response({'status': 'user added to the list'})
+        except User.DoesNotExist:
+            return Response({'error': 'User does not exist'})
 
 
 class GroceryItemViewSet(viewsets.ModelViewSet):

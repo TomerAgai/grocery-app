@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import GroceryItem
+from .models import GroceryItem, GroceryList
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
@@ -22,3 +22,9 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class GroceryListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GroceryList
+        fields = ['id', 'name', 'creator']
