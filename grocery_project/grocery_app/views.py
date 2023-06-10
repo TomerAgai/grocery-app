@@ -18,26 +18,65 @@ from rest_framework.permissions import IsAuthenticated
 
 class GroceryListViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = GroceryList.objects.all()
     serializer_class = GroceryListSerializer
+
+    def get_queryset(self):
+        return GroceryList.objects.filter(users=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        list_name = data.get('name')
+        if list_name:
+            grocery_list = GroceryList.objects.create(
+                name=list_name, creator=request.user)
+            grocery_list.users.add(request.user)  # Add this line
+            grocery_list.save()  # And this line
+            return Response(GroceryListSerializer(grocery_list).data, status=status.HTTP_201_CREATED)
+        return Response({'error': 'List name is required'}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['post'])
     def share(self, request, pk=None):
         grocery_list = self.get_object()
-        user_id = request.data.get('user_id')
+        # Change this line to get username instead of user_id
+        username = request.data.get('username')
         try:
-            user = User.objects.get(pk=user_id)
+            # Change this line to find User by username instead of id
+            user = User.objects.get(username=username)
             grocery_list.users.add(user)
             grocery_list.save()
             return Response({'status': 'user added to the list'})
         except User.DoesNotExist:
             return Response({'error': 'User does not exist'})
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        # Only allow deletion if the current user is the creator of the list
+        if request.user == instance.creator:
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            # Non-creators can only remove the list from their view
+            instance.users.remove(request.user)
+            return Response({'status': 'List removed from your view'})
+
+        return Response({'error': 'Something went wrong'}, status=status.HTTP_400_BAD_REQUEST)
+
+    def perform_destroy(self, instance):
+        instance.delete()
+
 
 class GroceryItemViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = GroceryItem.objects.all()
     serializer_class = GroceryItemSerializer
+
+    def get_queryset(self):
+        list_id = self.request.query_params.get('list_id', None)
+        if list_id is not None:
+            return GroceryItem.objects.filter(list_id=list_id)
+        return GroceryItem.objects.all()
+
+    queryset = GroceryItem.objects.all()
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -48,10 +87,16 @@ class GroceryItemViewSet(viewsets.ModelViewSet):
         instance.delete()
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def compare_prices(request):
-    # Fetch all products from the database
-    product_list = list(GroceryItem.objects.values_list('name', flat=True))
+    list_id = request.data.get('list_id')
+
+    if not list_id:
+        return JsonResponse({'error': 'No list ID provided'}, status=400)
+
+    # Fetch all products from the specified list
+    product_list = list(GroceryItem.objects.filter(
+        list_id=list_id).values_list('name', flat=True))
 
     if product_list:
         # start a new event loop
@@ -69,7 +114,7 @@ def compare_prices(request):
         return JsonResponse(response, status=200)
     else:
         # return error message if product_list is None
-        return JsonResponse({'error': 'No products found in the database'}, status=400)
+        return JsonResponse({'error': 'No products found in the list'}, status=400)
 
 
 # User Registration View

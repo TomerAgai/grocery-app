@@ -7,7 +7,7 @@ from rest_framework import serializers
 class GroceryItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = GroceryItem
-        fields = ['id', 'name', 'quantity', 'user']
+        fields = ['id', 'name', 'quantity', 'user', 'list']
 
 
 class UserSerializer(serializers.ModelSerializer):

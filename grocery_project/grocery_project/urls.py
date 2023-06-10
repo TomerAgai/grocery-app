@@ -21,8 +21,8 @@ from grocery_app.views import GroceryItemViewSet, compare_prices, UserCreate, Us
 
 
 router = DefaultRouter()
-router.register(r'grocery_lists', GroceryListViewSet)
-router.register(r'grocery_items', GroceryItemViewSet)
+router.register(r'grocery_lists', GroceryListViewSet, basename='grocerylist')
+router.register(r'grocery_items', GroceryItemViewSet, basename='groceryitem')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

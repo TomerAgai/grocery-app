@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IonButton } from '@ionic/react';
-import axios from 'axios';
+import { comparePrices } from '../api';
 
 // Define the expected structure of compareResult object
 interface CompareResult {
@@ -9,26 +9,25 @@ interface CompareResult {
     not_found_list_yochananof: string[];
     not_found_list_shufersal: string[];
 }
+interface ComparePricesButtonProps {
+    listId: number;
+}
 
-const ComparePricesButton: React.FC = () => {
+const ComparePricesButton: React.FC<ComparePricesButtonProps> = ({ listId }) => {
     // Use CompareResult interface when declaring state
     const [compareResult, setCompareResult] = useState<CompareResult | null>(null);
 
-    const comparePrices = async () => {
+    const handleComparePrices = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/compare_prices/');
-            //console.log(response.data);  // add this line
+            const response = await comparePrices(listId); // Use the listId passed as prop
             setCompareResult(response.data);
         } catch (error) {
             console.error('Error during comparison:', error);
         }
     }
-
-
-
     return (
         <div>
-            <IonButton onClick={comparePrices}>Compare Prices</IonButton>
+            <IonButton onClick={handleComparePrices}>Compare Prices</IonButton>
             {
                 compareResult &&
                 <div>
@@ -38,7 +37,7 @@ const ComparePricesButton: React.FC = () => {
                     <p>Not found in Shufersal: {compareResult != null ? compareResult.not_found_list_shufersal.join(', ') : []}</p>
                 </div>
             }
-        </div >
+        </div>
     );
 }
 
