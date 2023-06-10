@@ -139,4 +139,4 @@ class UserLoginView(ObtainAuthToken):
 class UserLogoutView(APIView):
     def post(self, request):
         request.user.auth_token.delete()
-        return Response(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)

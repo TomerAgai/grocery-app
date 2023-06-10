@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButton } from '@ionic/react';
-import { getGroceryLists, createGroceryList } from '../api';
+import { getGroceryLists, createGroceryList, logoutUser } from '../api';  // <-- Import logoutUser
 import GroceryList from '../components/ GroceryList';
+import { useHistory } from 'react-router-dom';  // <-- Import useHistory
 
 interface List {
   id: number;
@@ -9,9 +10,14 @@ interface List {
   creator: number;
   users: number[];
 }
+interface HomeProps {
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean | null>>;
+}
 
-const Home: React.FC = () => {
+
+const Home: React.FC<HomeProps> = ({ setIsAuthenticated }) => {
   const [lists, setLists] = useState<List[]>([]);
+  const history = useHistory();  // <-- Initialize history
 
   useEffect(() => {
     fetchLists();
@@ -28,6 +34,14 @@ const Home: React.FC = () => {
     }
   };
 
+  const handleLogout = () => {
+    logoutUser().then(() => {
+      localStorage.removeItem('token');  // Remove the token from local storage
+      setIsAuthenticated(false);  // Set isAuthenticated state to false
+      history.push('/login');
+    });
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -41,6 +55,7 @@ const Home: React.FC = () => {
           {lists.map(list => (
             <GroceryList list={list} key={list.id} onListUpdated={fetchLists} />
           ))}
+          <IonButton onClick={handleLogout}>Logout</IonButton>  {/* <-- Add logout button */}
         </div>
       </IonContent>
     </IonPage>

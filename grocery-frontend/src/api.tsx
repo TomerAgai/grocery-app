@@ -44,8 +44,30 @@ export const registerUser = (user: { username: string, password: string }) => {
 }
 
 export const loginUser = (user: { username: string, password: string }) => {
-    return axios.post(`${BASE_URL}/api/login/`, user);
+    return axios.post(`${BASE_URL}/api/login/`, user)
+        .then(response => {
+            localStorage.setItem('token', response.data.token); // Store the token in localStorage
+            return response;
+        });
 }
+
+export const logoutUser = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        throw new Error('No authentication token');
+    }
+
+    return axios.post(`${BASE_URL}/api/logout/`, {}, {
+        headers: {
+            'Authorization': `Token ${token}`,
+        },
+    })
+        .then(() => {
+            localStorage.removeItem('token'); // Remove the token from localStorage
+        });
+}
+
+
 export const getGroceryLists = async () => {
     const token = localStorage.getItem('token');
     if (!token) {

@@ -2,7 +2,11 @@ import React from 'react';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage } from '@ionic/react';
 import LoginForm from '../components/LoginForm';
 
-const Login: React.FC = () => {
+interface LoginProps {
+    setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean | null>>;
+}
+
+const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
     return (
         <IonPage>
             <IonHeader>
@@ -12,7 +16,7 @@ const Login: React.FC = () => {
             </IonHeader>
             <IonContent>
                 <div slot="fixed">
-                    <LoginForm />
+                    <LoginForm setIsAuthenticated={setIsAuthenticated} />
                 </div>
             </IonContent>
         </IonPage>
