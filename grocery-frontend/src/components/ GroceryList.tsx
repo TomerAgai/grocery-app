@@ -1,5 +1,5 @@
-import React from 'react';
-import { IonItem, IonLabel, IonButton } from '@ionic/react';
+import React, { useState } from 'react';
+import { IonItem, IonLabel, IonButton, IonAlert } from '@ionic/react';
 import { shareGroceryList, deleteGroceryList } from '../api';
 import { Link } from 'react-router-dom';
 
@@ -14,6 +14,10 @@ interface GroceryListProps {
 }
 
 const GroceryList: React.FC<GroceryListProps> = ({ list, onListUpdated }) => {
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [alertHeader, setAlertHeader] = useState('');
+
     const handleShare = (event: React.MouseEvent) => {
         event.preventDefault();
         const username = window.prompt('Enter the username of the user to share this list with');
@@ -22,34 +26,43 @@ const GroceryList: React.FC<GroceryListProps> = ({ list, onListUpdated }) => {
         }
     };
 
-
     const handleDelete = (event: React.MouseEvent) => {
         event.preventDefault();
         const isUserSure = window.confirm("Are you sure you want to delete this list?");
         if (isUserSure) {
             deleteGroceryList(list.id).then(response => {
                 if (response.status === 'List removed from your view') {
-                    alert('The list was removed from your view.');
-                    onListUpdated();
+                    setAlertMessage('The list was removed from your view.');
+                    setAlertHeader('List Removed');
                 } else {
-                    alert('The list was deleted for all users.');
-                    onListUpdated();
+                    setAlertMessage('The list was deleted for all users.');
+                    setAlertHeader('List Deleted');
                 }
+                setShowAlert(true);
+                onListUpdated();
             });
         }
     };
 
-
     return (
-        <IonItem>
-            <IonLabel>
-                <Link to={`/list/${list.id}`}>
-                    {list.name}
-                </Link>
-            </IonLabel>
-            <IonButton onClick={handleShare}>Share</IonButton>
-            <IonButton onClick={handleDelete}>Delete</IonButton>
-        </IonItem>
+        <>
+            <IonItem>
+                <IonLabel>
+                    <Link to={`/list/${list.id}`}>
+                        {list.name}
+                    </Link>
+                </IonLabel>
+                <IonButton onClick={handleShare}>Share</IonButton>
+                <IonButton onClick={handleDelete}>Delete</IonButton>
+            </IonItem>
+            <IonAlert
+                isOpen={showAlert}
+                onDidDismiss={() => setShowAlert(false)}
+                header={alertHeader}
+                message={alertMessage}
+                buttons={['OK']}
+            />
+        </>
     );
 };
 

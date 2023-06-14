@@ -1,43 +1,88 @@
-import React, { useEffect, useState } from 'react';
-import { IonButton } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
+import { useEffect, useState } from 'react';
 import { comparePrices } from '../api';
 
-// Define the expected structure of compareResult object
+interface Product {
+    name: string;
+    price: number;
+}
+interface CompareResult {
+    [key: string]: number | string[] | Product[];
+}
+
+
 interface CompareResult {
     yochananof_total_price: number;
     shufersal_total_price: number;
+    carrefour_total_price: number;
     not_found_list_yochananof: string[];
     not_found_list_shufersal: string[];
-}
-interface ComparePricesButtonProps {
-    listId: number;
+    not_found_list_carrefour: string[];
+    yochananof_products: Product[];
+    shufersal_products: Product[];
+    carrefour_products: Product[];
 }
 
 const ComparePricesButton: React.FC<ComparePricesButtonProps> = ({ listId }) => {
-    // Use CompareResult interface when declaring state
     const [compareResult, setCompareResult] = useState<CompareResult | null>(null);
 
     const handleComparePrices = async () => {
         try {
-            const response = await comparePrices(listId); // Use the listId passed as prop
+            const response = await comparePrices(listId);
             setCompareResult(response.data);
         } catch (error) {
             console.error('Error during comparison:', error);
         }
     }
+
+
+    const renderNotFound = (store: string) => {
+        const notFoundList = compareResult ? (compareResult[`not_found_list_${store}`] as string[]) : [];
+        return notFoundList.length ? <IonRow>Not found in {store}: {notFoundList.join(', ')}</IonRow> : null;
+    }
+
+    const renderProducts = (store: string) => {
+        const products = compareResult ? (compareResult[`${store}_products`] as Product[]) : [];
+        return products.length ? (
+            <>
+                <IonText>{store} Found Products</IonText>
+                <IonGrid>
+                    <IonRow>
+                        <IonCol>Product Name</IonCol>
+                        <IonCol>Price</IonCol>
+                    </IonRow>
+                    {
+                        products.map((product, index) =>
+                            <IonRow key={index}>
+                                <IonCol>{product.name}</IonCol>
+                                <IonCol>{typeof product.price === "number" ? product.price.toFixed(2) + ' ₪' : product.price}</IonCol>
+                            </IonRow>
+                        )
+                    }
+                </IonGrid>
+            </>
+        ) : null;
+    }
+
     return (
-        <div>
+        <>
             <IonButton onClick={handleComparePrices}>Compare Prices</IonButton>
             {
-                compareResult &&
-                <div>
-                    <p>Yochananof total price: {compareResult.yochananof_total_price.toFixed(2) + ' ₪'}</p>
-                    <p>Shufersal total price: {compareResult.shufersal_total_price.toFixed(2) + ' ₪'}</p>
-                    <p>Not found in Yochananof: {compareResult != null ? compareResult.not_found_list_yochananof.join(', ') : []}</p>
-                    <p>Not found in Shufersal: {compareResult != null ? compareResult.not_found_list_shufersal.join(', ') : []}</p>
-                </div>
+                compareResult && (
+                    <>
+                        <IonRow>Yochananof total price: {compareResult.yochananof_total_price.toFixed(2) + ' ₪'}</IonRow>
+                        <IonRow>Shufersal total price: {compareResult.shufersal_total_price.toFixed(2) + ' ₪'}</IonRow>
+                        <IonRow>Carrefour total price: {compareResult.carrefour_total_price.toFixed(2) + ' ₪'}</IonRow>
+                        {renderNotFound('yochananof')}
+                        {renderNotFound('shufersal')}
+                        {renderNotFound('carrefour')}
+                        {renderProducts('yochananof')}
+                        {renderProducts('shufersal')}
+                        {renderProducts('carrefour')}
+                    </>
+                )
             }
-        </div>
+        </>
     );
 }
 

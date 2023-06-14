@@ -108,9 +108,15 @@ def compare_prices(request):
         response = {
             'yochananof_total_price': result[0],
             'shufersal_total_price': result[1],
-            'not_found_list_yochananof': result[2],
-            'not_found_list_shufersal': result[3],
+            'carrefour_total_price': result[2],
+            'not_found_list_yochananof': result[3],
+            'not_found_list_shufersal': result[4],
+            'not_found_list_carrefour': result[5],
+            'yochananof_products': result[6],
+            'shufersal_products': result[7],
+            'carrefour_products': result[8],
         }
+
         return JsonResponse(response, status=200)
     else:
         # return error message if product_list is None
@@ -138,5 +144,6 @@ class UserLoginView(ObtainAuthToken):
 
 class UserLogoutView(APIView):
     def post(self, request):
-        request.user.auth_token.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if request.user.is_authenticated:
+            request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)

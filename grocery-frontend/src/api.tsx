@@ -52,20 +52,12 @@ export const loginUser = (user: { username: string, password: string }) => {
 }
 
 export const logoutUser = () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-        throw new Error('No authentication token');
-    }
-
-    return axios.post(`${BASE_URL}/api/logout/`, {}, {
-        headers: {
-            'Authorization': `Token ${token}`,
-        },
-    })
+    return axios.post(`${BASE_URL}/api/logout/`, {})
         .then(() => {
             localStorage.removeItem('token'); // Remove the token from localStorage
         });
 }
+
 
 
 export const getGroceryLists = async () => {
