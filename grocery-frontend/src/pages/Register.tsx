@@ -1,8 +1,16 @@
 import React from 'react';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage } from '@ionic/react';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButton } from '@ionic/react';
 import RegistrationForm from '../components/RegistrationForm';
+import { useHistory } from 'react-router-dom';
+
+
 
 const Register: React.FC = () => {
+    const history = useHistory();
+
+    const handleGoBack = () => {
+        history.goBack();
+    };
     return (
         <IonPage>
             <IonHeader>
@@ -13,6 +21,7 @@ const Register: React.FC = () => {
             <IonContent>
                 <div slot="fixed">
                     <RegistrationForm />
+                    <IonButton expand="full" onClick={handleGoBack}>Go Back</IonButton>
                 </div>
             </IonContent>
         </IonPage>
