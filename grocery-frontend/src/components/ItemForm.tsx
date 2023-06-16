@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { IonInput, IonButton } from '@ionic/react';
 import { createGroceryItem } from '../api';
+import './ItemForm.css';
 
 interface ItemFormProps {
     onItemAdded: () => void;
@@ -19,7 +20,7 @@ const ItemForm: React.FC<ItemFormProps> = ({ onItemAdded, listId }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='form' onSubmit={handleSubmit}>
             <IonInput
                 value={name}
                 onIonChange={event => setName(event.detail.value!)}

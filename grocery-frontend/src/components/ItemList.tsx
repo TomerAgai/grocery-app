@@ -3,6 +3,7 @@
 import React from 'react';
 import { IonList, IonItem, IonButton, IonItemSliding, IonItemOptions, IonItemOption } from '@ionic/react';
 import { removeGroceryItem } from '../api';
+import './ItemList.css';
 
 interface Item {
     id: number;
@@ -24,8 +25,8 @@ const ItemList: React.FC<ItemListProps> = ({ items, onItemRemoved }) => {
     return (
         <IonList>
             {items.map(item => (
-                <IonItemSliding key={item.id}>
-                    <IonItem>
+                <IonItemSliding className="IonItemSliding" key={item.id}>
+                    <IonItem className="itemName">
                         {item.name}
                     </IonItem>
                     <IonItemOptions side="end">

@@ -1,0 +1,71 @@
+/* LoginForm.css */
+
+.login-form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    /* take up the full height of its container */
+}
+
+form {
+    font-size: 20px;
+    margin-top: 50%;
+    width: 90%;
+    /* increase to take up more horizontal space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    /* add space inside the form */
+}
+
+form IonInput {
+    /* increase input text size */
+    font-size: 200px;
+    width: 100%;
+    margin-bottom: 20px;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --background: #59f107;
+    --color: #000000;
+    --placeholder-color: #f1eaea;
+    --placeholder-font-style: italic;
+    --border-radius: 10px;
+    --box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+form IonLabel {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form IonButton {
+    --background: rgb(34, 70, 177);
+    --color: #b41d1d;
+    --border-radius: 10px;
+    font-size: 16px;
+    padding: 10px;
+}
+
+form p {
+    text-align: center;
+    color: black;
+    margin-top: 10px;
+}
+
+ion-input {
+    color: var(--ion-color-primary);
+}
+
+
+.register {
+    color: rgb(34, 70, 177);
+    text-decoration: wavy;
+    cursor: pointer;
+    font-weight: bold;
+}

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { IonInput, IonButton, IonLabel, IonRouterLink } from '@ionic/react';
+import { IonInput, IonButton, IonLabel, IonRouterLink, IonFab, IonFabButton } from '@ionic/react';
 import { loginUser } from '../api'; // Import loginUser function
 import { useHistory } from 'react-router-dom';
+import './LoginForm.css';
 
 interface LoginFormProps {
     setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean | null>>;
@@ -35,24 +36,26 @@ const LoginForm: React.FC<LoginFormProps> = ({ setIsAuthenticated }) => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <IonInput
-                value={username}
-                onIonChange={event => setUsername(event.detail.value!)}
-                placeholder="Enter Username"
-            />
-            <IonInput
-                value={password}
-                onIonChange={event => setPassword(event.detail.value!)}
-                placeholder="Enter Password"
-                type="password"
-            />
-            {error && <IonLabel color="danger">{error}</IonLabel>} {/* Display error message */}
-            <IonButton expand="full" type="submit">Login</IonButton>
-            <p>
-                Don't have an account? <IonRouterLink onClick={goToRegister}>Register here</IonRouterLink>
-            </p>
-        </form>
+        <div className="login-form-container">
+            <form onSubmit={handleSubmit}>
+                <IonInput
+                    value={username}
+                    onIonChange={event => setUsername(event.detail.value!)}
+                    placeholder="Enter Username"
+                />
+                <IonInput
+                    value={password}
+                    onIonChange={event => setPassword(event.detail.value!)}
+                    placeholder="Enter Password"
+                    type="password"
+                />
+                {error && <IonLabel color="danger">{error}</IonLabel>} {/* Display error message */}
+                <IonButton color="primary" expand="full" type="submit">Login</IonButton>
+                <p>
+                    Don't have an account? <IonRouterLink className='register' onClick={goToRegister}>Register here</IonRouterLink>
+                </p>
+            </form>
+        </div>
     );
 }
 

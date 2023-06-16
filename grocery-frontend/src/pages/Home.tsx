@@ -3,6 +3,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButton } from 
 import { getGroceryLists, createGroceryList, logoutUser } from '../api';  // <-- Import logoutUser
 import GroceryList from '../components/ GroceryList';
 import { useHistory } from 'react-router-dom';  // <-- Import useHistory
+import './Home.css'
 
 interface List {
   id: number;
@@ -43,19 +44,19 @@ const Home: React.FC<HomeProps> = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <IonPage>
+    <IonPage className='home-page'>
       <IonHeader>
         <IonToolbar>
           <IonTitle>Grocery Lists</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent className='home-ion-content'>
         <div slot="fixed">
-          <IonButton onClick={handleCreateList}>Create New List</IonButton>
+          <IonButton className="create" fill="solid" onClick={handleCreateList}>Create New List</IonButton>
           {lists.map(list => (
             <GroceryList list={list} key={list.id} onListUpdated={fetchLists} />
           ))}
-          <IonButton onClick={handleLogout}>Logout</IonButton>  {/* <-- Add logout button */}
+          <IonButton id="Logout" fill="solid" onClick={handleLogout}>Logout</IonButton>
         </div>
       </IonContent>
     </IonPage>

@@ -2,6 +2,7 @@ import React from 'react';
 import { IonItem, IonLabel, IonButton } from '@ionic/react';
 import { shareGroceryList, deleteGroceryList } from '../api';
 import { Link } from 'react-router-dom';
+import './GroceryList.css';
 
 interface GroceryListProps {
     list: {
@@ -41,16 +42,19 @@ const GroceryList: React.FC<GroceryListProps> = ({ list, onListUpdated }) => {
 
 
     return (
-        <IonItem>
-            <IonLabel>
+        <IonItem lines="none">
+            <IonLabel slot="start">
                 <Link to={`/list/${list.id}`}>
                     {list.name}
                 </Link>
             </IonLabel>
-            <IonButton onClick={handleShare}>Share</IonButton>
-            <IonButton onClick={handleDelete}>Delete</IonButton>
+            <div id='button'>
+                <IonButton slot="end" onClick={handleShare}>Share</IonButton>
+                <IonButton slot="end" onClick={handleDelete}>Delete</IonButton>
+            </div>
         </IonItem>
     );
+
 };
 
 export default GroceryList;

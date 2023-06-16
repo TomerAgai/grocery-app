@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import ListPage from './pages/ListPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
-
+import './App.css';
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);

@@ -5,6 +5,7 @@ import ItemForm from '../components/ItemForm';
 import ComparePricesButton from '../components/ComparePrice';
 import { getGroceryItemsForList } from '../api';
 import { useParams, useHistory } from 'react-router-dom';
+import './ListPage.css'
 
 interface Item {
     id: number;
@@ -35,17 +36,13 @@ const ListPage: React.FC = () => {
                     <IonTitle>Grocery List</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent className="ion-padding">
-                <div slot="fixed">
-                    <IonCard>
-                        <IonCardContent>
-                            <IonButton expand="full" onClick={handleGoBack}>Go Back</IonButton>
-                            <ItemForm onItemAdded={fetchItems} listId={parseInt(id)} />
-                            <ItemList items={items} onItemRemoved={fetchItems} />
-                            <ComparePricesButton listId={parseInt(id)} />
-                        </IonCardContent>
-                    </IonCard>
-                    <IonButton expand="full" onClick={handleGoBack}>Go Back</IonButton>
+            <IonContent className="listPage-ion-content">
+                <div className='div' slot="fixed">
+                    <IonButton className="IonButton" expand="full" onClick={handleGoBack}>Go Back</IonButton>
+                    <ItemForm onItemAdded={fetchItems} listId={parseInt(id)} />
+                    <ItemList items={items} onItemRemoved={fetchItems} />
+                    <ComparePricesButton listId={parseInt(id)} />
+                    <IonButton className="IonButton" expand="full" onClick={handleGoBack}>Go Back</IonButton>
                 </div>
             </IonContent>
         </IonPage>

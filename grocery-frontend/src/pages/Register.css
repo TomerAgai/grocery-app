@@ -1,0 +1,23 @@
+/* Register.css */
+
+.register-ion-content {
+    background-color: var(--ion-color-light);
+    text-align: center;
+    align-items: center;
+}
+
+.IonTitle {
+    color: var(--ion-color-primary);
+}
+
+div {
+    position: static !important;
+    /* replace with the desired value */
+    transform: translateZ(0px);
+    text-align: center;
+}
+
+form.regForm {
+    margin-top: 5%;
+
+}

@@ -1,6 +1,7 @@
 import { IonButton, IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { comparePrices } from '../api';
+import './ComparePrice.css';
 
 interface Product {
     name: string;
@@ -46,16 +47,16 @@ const ComparePricesButton: React.FC<ComparePricesButtonProps> = ({ listId }) => 
         return products.length ? (
             <>
                 <IonText>{store} Found Products</IonText>
-                <IonGrid>
-                    <IonRow>
-                        <IonCol>Product Name</IonCol>
-                        <IonCol>Price</IonCol>
+                <IonGrid className="compare-grid">
+                    <IonRow className="compare-row">
+                        <IonCol className="compare-col">Product Name</IonCol>
+                        <IonCol className="compare-col">Price</IonCol>
                     </IonRow>
                     {
                         products.map((product, index) =>
-                            <IonRow key={index}>
-                                <IonCol>{product.name}</IonCol>
-                                <IonCol>{typeof product.price === "number" ? product.price.toFixed(2) + ' ₪' : product.price}</IonCol>
+                            <IonRow className="compare-row" key={index}>
+                                <IonCol className="compare-col">{product.name}</IonCol>
+                                <IonCol className="compare-col">{typeof product.price === "number" ? product.price.toFixed(2) + ' ₪' : product.price}</IonCol>
                             </IonRow>
                         )
                     }
@@ -66,20 +67,24 @@ const ComparePricesButton: React.FC<ComparePricesButtonProps> = ({ listId }) => 
 
     return (
         <>
-            <IonButton onClick={handleComparePrices}>Compare Prices</IonButton>
+            <IonButton className="compare-button" onClick={handleComparePrices}>Compare Prices</IonButton>
+
             {
+
                 compareResult && (
-                    <>
-                        <IonRow>Yochananof total price: {compareResult.yochananof_total_price.toFixed(2) + ' ₪'}</IonRow>
-                        <IonRow>Shufersal total price: {compareResult.shufersal_total_price.toFixed(2) + ' ₪'}</IonRow>
-                        <IonRow>Carrefour total price: {compareResult.carrefour_total_price.toFixed(2) + ' ₪'}</IonRow>
-                        {renderNotFound('yochananof')}
-                        {renderNotFound('shufersal')}
-                        {renderNotFound('carrefour')}
-                        {renderProducts('yochananof')}
-                        {renderProducts('shufersal')}
-                        {renderProducts('carrefour')}
-                    </>
+                    <div className="compare-results">
+                        <>
+                            <IonRow>Yochananof total price: {compareResult.yochananof_total_price.toFixed(2) + ' ₪'}</IonRow>
+                            <IonRow>Shufersal total price: {compareResult.shufersal_total_price.toFixed(2) + ' ₪'}</IonRow>
+                            <IonRow>Carrefour total price: {compareResult.carrefour_total_price.toFixed(2) + ' ₪'}</IonRow>
+                            {renderNotFound('yochananof')}
+                            {renderNotFound('shufersal')}
+                            {renderNotFound('carrefour')}
+                            {renderProducts('yochananof')}
+                            {renderProducts('shufersal')}
+                            {renderProducts('carrefour')}
+                        </>
+                    </div>
                 )
             }
         </>

@@ -26,7 +26,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
 
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="regForm" onSubmit={handleSubmit}>
             <IonInput
                 value={username}
                 onIonChange={event => setUsername(event.detail.value!)}

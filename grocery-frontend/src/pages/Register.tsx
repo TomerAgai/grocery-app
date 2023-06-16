@@ -2,7 +2,7 @@ import React from 'react';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButton } from '@ionic/react';
 import RegistrationForm from '../components/RegistrationForm';
 import { useHistory } from 'react-router-dom';
-
+import './Register.css'
 
 
 const Register: React.FC = () => {
@@ -18,7 +18,7 @@ const Register: React.FC = () => {
                     <IonTitle>Register</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent>
+            <IonContent className="register-ion-content">
                 <div slot="fixed">
                     <RegistrationForm />
                     <IonButton expand="full" onClick={handleGoBack}>Go Back</IonButton>

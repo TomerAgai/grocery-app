@@ -1,0 +1,31 @@
+/* ItemList.css */
+
+.IonList {
+    margin-top: 20px;
+}
+
+ion-item-sliding {
+    margin-bottom: 10px;
+}
+
+.IonItemOptions {
+    background-color: var(--ion-color-danger);
+}
+
+.itemName {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    font-weight: bold;
+
+    /* This sets a 2px black border around the item */
+    border-radius: 20px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    /* This sets the font to Arial (you can change this to your desired font) */
+    font-size: 16px;
+    /* This sets the font size */
+    color: #000;
+    /* This sets the text color */
+    justify-content: space-between;
+
+}

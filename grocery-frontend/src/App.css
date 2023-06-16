@@ -1,0 +1,38 @@
+/* App.css */
+
+:root {
+    --ion-color-primary: #0b67e9;
+    /* Green */
+    --ion-color-secondary: #0daffa;
+    /* Deep orange */
+    --ion-color-tertiary: #3f433f;
+    /* Light Green */
+    --ion-color-success: #8BC34A;
+    /* Light Green */
+    --ion-color-warning: #FFEB3B;
+    /* Yellow */
+    --ion-color-danger: #F44336;
+    /* Red */
+    --ion-color-dark: #795548;
+    /* Brown */
+    --ion-color-medium: #9E9E9E;
+    /* Grey */
+    --ion-color-light: #FFFFFF;
+    /* White */
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+button {
+    margin: 10px;
+
+}
+
+ion-button {
+    font-size: 18px;
+    color: var(--ion-color-tertiary);
+    --background: var(--ion-color-danger);
+
+}
