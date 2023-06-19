@@ -1,4 +1,4 @@
-import { IonButton, IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonRow, IonText, IonLoading } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { comparePrices } from '../api';
 import './ComparePrice.css';
@@ -26,13 +26,17 @@ interface CompareResult {
 
 const ComparePricesButton: React.FC<ComparePricesButtonProps> = ({ listId }) => {
     const [compareResult, setCompareResult] = useState<CompareResult | null>(null);
+    const [isLoading, setIsLoading] = useState(false); // new state for loading
 
     const handleComparePrices = async () => {
+        setIsLoading(true); // start loading
         try {
             const response = await comparePrices(listId);
             setCompareResult(response.data);
         } catch (error) {
             console.error('Error during comparison:', error);
+        } finally {
+            setIsLoading(false); // stop loading
         }
     }
 
@@ -68,9 +72,8 @@ const ComparePricesButton: React.FC<ComparePricesButtonProps> = ({ listId }) => 
     return (
         <>
             <IonButton className="compare-button" onClick={handleComparePrices}>Compare Prices</IonButton>
-
+            <IonLoading isOpen={isLoading} message={'Please wait...'} />
             {
-
                 compareResult && (
                     <div className="compare-results">
                         <>

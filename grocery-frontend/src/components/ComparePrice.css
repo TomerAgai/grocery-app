@@ -3,6 +3,8 @@
 .compare-button {
     margin-top: 20px;
     font-weight: 600;
+    padding: 5px;
+    padding-bottom: 10%;
 }
 
 .compare-results {
@@ -10,19 +12,19 @@
     padding: 10px;
     border-radius: 8px;
     background-color: var(--ion-color-light-tint);
-    border: 5px solid #ddd;
+
     color: var(--ion-color-tertiary);
     font: bold;
     font-size: x-large;
     font-weight: 900;
     font-family: 'Courier New', Courier, monospace;
     border-radius: 10px;
+    background-color: #ffffff9c;
 
 }
 
 .compare-results .compare-row {
     margin-bottom: 10px;
-    border-bottom: 4px solid #ddd;
 
 }
 
@@ -34,7 +36,6 @@
 .compare-results .compare-row .compare-col {
     min-width: 100px;
     padding: 10px;
-    border-right: 4px solid #ddd;
     font-size: large;
     color: var(--ion-color-dark);
     background-color: #fff;
