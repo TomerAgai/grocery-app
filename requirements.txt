@@ -1,0 +1,9 @@
+Django
+djangorestframework
+djangorestframework.authtoken
+django-cors-headers
+mysqlclient
+aiohttp
+pyquery
+fuzzywuzzy
+python-Levenshtein
