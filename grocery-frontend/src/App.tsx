@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
-import ListPage from './pages/ListPage';  
+import ListPage from './pages/ListPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import './App.css';
@@ -33,7 +33,7 @@ const App: React.FC = () => {
       <Route path="/register">
         {isAuthenticated ? <Redirect to="/home" /> : <Register />}
       </Route>
-      <Redirect from="/" to="/login" exact />
+      <Redirect from="/" to={isAuthenticated ? "/home" : "/login"} exact />
     </IonReactRouter>
   );
 };
