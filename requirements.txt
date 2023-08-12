@@ -1,8 +1,0 @@
-Django
-djangorestframework
-django-cors-headers
-PyMySQL
-aiohttp
-pyquery
-fuzzywuzzy
-python-Levenshtein
