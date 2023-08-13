@@ -168,7 +168,7 @@ async def scraper_main(product_list):
 
     async with aiohttp.ClientSession() as session:
         for product in product_list:
-            print(f"Scraping {product[::-1]}...")
+            # print(f"Scraping {product[::-1]}...")
             yochananof_product = await scrape_yochananof(session, product)
             shufersal_product = await scrape_shufersal(session, product)
             carrefour_product = await scrape_carrefour(session, product)
@@ -198,8 +198,8 @@ async def scraper_main(product_list):
                 carrefour_found.append(carrefour_product)
                 carrefour_total_price += carrefour_product['price']
 
-    for product in yochananof_found:
-        print(product)
+    # for product in yochananof_found:
+    #     # print(product)
 
     return yochananof_total_price, shufersal_total_price, carrefour_total_price, not_found_list_yochananof,\
         not_found_list_shufersal, not_found_list_carrefour, yochananof_found, shufersal_found, carrefour_found
