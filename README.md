@@ -26,13 +26,56 @@ To run the Grocery App locally, follow these steps:
 1. Clone the repository: `git clone https://github.com/TomerAgai/grocery-app`.
 2. Navigate into the backend directory: `cd grocery-app/grocery_project`.
 3. Install the necessary backend dependencies: `pip install -r requirements.txt`.
-4. Configure the database connection settings in the Django settings file.
+4. Configure the database connection settings in the Django settings file (see [Database Configuration](#database-configuration) section).
 5. Run the database migrations: `python manage.py migrate`.
 6. Start the Django development server: `python manage.py runserver`.
 7. In a new terminal window, navigate into the frontend directory: `cd ../grocery-frontend`.
 8. Install the necessary frontend dependencies: `npm install`.
 9. Start the React-Ionic development server: `ionic serve`.
 10. Open your browser and go to `localhost:8100` (or the specified port where your React app is running).
+
+### Database Configuration
+
+To configure the MySQL database connection, follow the instructions specific to your operating system:
+
+#### macOS
+
+1. Install MySQL:
+   ```bash
+   brew install mysql
+2. Start the MySQL service:
+    brew services start mysql
+3. Open the MySQL shell:
+    mysql -u root -p
+4. Create the database:
+    CREATE DATABASE grocery_db;
+
+#### Windows
+1. Download MySQL Installer from the official website.
+2. Run the installer and follow the on-screen instructions.
+3. Open the MySQL Command Line Client from the Start Menu.
+4. Log in with your root password.
+5. Create the database:
+    CREATE DATABASE grocery_db;
+
+#### Linux (Ubuntu)
+
+1. Open a terminal.
+2. Update the package database:
+    sudo apt-get update
+3. Install MySQL:
+    sudo apt-get install mysql-server
+4. Secure the installation (optional, but recommended):
+    sudo mysql_secure_installation
+5. Open the MySQL shell:
+    mysql -u root -p
+6. Create the database:
+    CREATE DATABASE grocery_db;
+
+
+These instructions cover the installation of MySQL and the creation of the grocery_db database. Configure the Django settings file with the appropriate database connection details.
+
+
 
 ## Deployment
 
